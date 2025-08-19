@@ -1,1 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arkana: Kotak Misteri</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+        :root {
+            --color-primary: #1a1a2e;
+            --color-secondary: #0f3460;
+            --color-accent: #e94560;
+            --color-gold: #FFD700;
+            --color-light: #fefefe;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--color-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            background: rgba(25, 25, 40, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--color-gold);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--color-gold);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--color-gold);
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--color-light);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+        }
+
+        #open-box-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            background: var(--color-gold);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        #open-box-btn:hover {
+            background-color: #FFEA00;
+            transform: translateY(-3px);
+        }
+        
+        #open-box-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .result-box {
+            display: none;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-top: 2rem;
+            animation: slideIn 0.8s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .result-box h2 {
+            font-size: 2rem;
+            color: var(--color-gold);
+        }
+
+        .result-box img {
+            max-width: 150px;
+            height: auto;
+            margin-top: 1rem;
+            animation: tada 1.5s ease-in-out infinite;
+        }
+
+        @keyframes tada {
+            0% { transform: scale(1); }
+            10%, 20% { transform: scale(0.9) rotate(-3deg); }
+            30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
+            40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+        
+        .loading-animation {
+            display: none;
+            margin-top: 2rem;
+        }
+        
+        .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--color-gold);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="intro-section">
+            <h1>Arkana: Kotak Misteri</h1>
+            <p>Masukkan ID dan kupon Anda untuk mendapatkan kesempatan memenangkan hadiah eksklusif!</p>
+            
+            <form id="mystery-box-form">
+                <div class="form-group">
+                    <label for="user-id">ID Pengguna</label>
+                    <input type="text" id="user-id" placeholder="Masukkan ID Anda" required>
+                </div>
+                <div class="form-group">
+                    <label for="coupon-code">Kode Kupon</label>
+                    <input type="text" id="coupon-code" placeholder="Masukkan kode kupon" required>
+                </div>
+                <button type="submit" id="open-box-btn">Buka Kotak Misteri</button>
+            </form>
+        </div>
+
+        <div class="loading-animation" id="loading-section">
+            <div class="spinner"></div>
+            <p style="margin-top: 1rem;">Membuka peti harta karun...</p>
+        </div>
+
+        <div class="result-box" id="result-section">
+            <h2>Selamat! Anda Menang!</h2>
+            <p id="prize-name">Hadiah Anda akan muncul di sini</p>
+            <img id="prize-image" src="" alt="Hadiah">
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('mystery-box-form');
+        const introSection = document.getElementById('intro-section');
+        const loadingSection = document.getElementById('loading-section');
+        const resultSection = document.getElementById('result-section');
+        
+        // GANTI DENGAN URL API APPS SCRIPT ANDA
+        const apiUrl = 'PASTE_URL_API_ANDA_DI_SINI'; 
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const userId = document.getElementById('user-id').value;
+            const couponCode = document.getElementById('coupon-code').value;
+
+            introSection.style.display = 'none';
+            loadingSection.style.display = 'block';
+
+            fetch(apiUrl, {
+                method: 'POST',
+                body: JSON.stringify({ userId: userId, couponCode: couponCode }),
+                headers: {
+                    'Content-Type': 'text/plain' 
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                loadingSection.style.display = 'none';
+
+                if (data.success) {
+                    document.getElementById('prize-name').textContent = data.hadiah.nama;
+                    document.getElementById('prize-image').src = data.hadiah.gambar;
+                    resultSection.style.display = 'block';
+                } else {
+                    alert(data.message);
+                    introSection.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Silakan coba lagi.');
+                loadingSection.style.display = 'none';
+                introSection.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
